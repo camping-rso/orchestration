@@ -41,5 +41,6 @@ node_types:
               primary: playbooks/create.yml
               dependencies:
                 - microservices
+                - files/ingress.yml
           delete: playbooks/delete.yml
 ...

@@ -1,6 +1,10 @@
----
+-----
 - hosts: all
   tasks:
+    - name: Create a new public IP
+      shell: "az network public-ip create --resource-group {{ resource_group_name }} --name CampingIP --sku Standard --allocation-method static --query publicIp.ipAddress -o tsv"
+      register: public_ip
+
     - name: Install kubectl
       shell: "az aks install-cli --install-location=./kubectl"
 
@@ -20,6 +24,9 @@
       shell: "./kubectl create secret generic camping-images-ms-secrets --from-literal=postgres-username={{ camping_images_ms_postgres_credentials.username }}
                                                                         --from-literal=postgres-password={{ camping_images_ms_postgres_credentials.password }}"
 
+    - name: Create Kubernetes secret
+      shell: "./kubectl create secret generic camping-ms-secrets --from-literal=base-url=http://{{ public_ip }}"
+
     - name: Create Kubernetes deployment and service
       shell: "./kubectl apply -f microservices/camping_overview_ms/deployment.yml"
 
@@ -31,4 +38,28 @@
 
     - name: Create Kubernetes deployment and service
       shell: "./kubectl apply -f microservices/camping_images_ms/deployment.yml"
-...
+
+    - name: Create a namespace for ingress resources
+      shell: "./kubectl create namespace ingress-camping"
+
+    - name: Install helm
+      shell: "curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && chmod 700 get_helm.sh && ./get_helm.sh"
+
+    #    - name: Install helm
+    #      shell: "wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz && tar -zxvf helm-v3.4.2-linux-amd64.tar.gz && mv linux-amd64/helm ./helm"
+
+    - name: Add the ingress-nginx repository
+      shell: "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
+
+    - name: Use Helm to deploy an NGINX ingress controller
+      shell: 'helm install nginx-ingress ingress-nginx/ingress-nginx
+               --namespace ingress-camping
+               --set controller.replicaCount=1
+               --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux
+               --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
+               --set controller.service.loadBalancerIP="{{ public_ip }}"
+               --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux'
+
+    - name: Create Kubernetes deployment and service
+      shell: "./kubectl apply -f ingress.yml"
+.....

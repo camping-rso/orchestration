@@ -28,6 +28,11 @@ spec:
                 secretKeyRef:
                   name: camping-images-ms-secrets
                   key: postgres-password
+            - name: KUMULUZEE_SERVER_BASEURL
+              valueFrom:
+                secretKeyRef:
+                  name: camping-ms-secrets
+                  key: base-url
           ports:
             - containerPort: 8080
               name: server

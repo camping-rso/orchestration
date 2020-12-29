@@ -6,7 +6,6 @@ imports:
   - lib/azure_resource_group/azure_resource_group.yml
   - lib/k8s_cluster/k8s_cluster.yml
   - lib/k8s_deployment/k8s_deployment.yml
-  - lib/k8s_ingress/k8s_ingress.yml
 
 topology_template:
   inputs:
@@ -43,25 +42,25 @@ topology_template:
       requirements:
         - host: my-workstation
 
-#    resource_group:
-#      type: camping.nodes.azure_resource_group
-#      properties:
-#        resource_group_name: { get_input: resource_group_name }
-#        location: { get_input: location }
-#      requirements:
-#        - login: login
-#        - host: my-workstation
-#
-#    k8s_cluster:
-#      type: camping.nodes.k8s_cluster
-#      properties:
-#        resource_group_name: { get_input: resource_group_name }
-#        location: { get_input: location }
-#        aks_name: { get_input: aks_name }
-#      requirements:
-#        - host: my-workstation
-#        - login: login
-#        - resource_group: resource_group
+    resource_group:
+      type: camping.nodes.azure_resource_group
+      properties:
+        resource_group_name: { get_input: resource_group_name }
+        location: { get_input: location }
+      requirements:
+        - login: login
+        - host: my-workstation
+
+    k8s_cluster:
+      type: camping.nodes.k8s_cluster
+      properties:
+        resource_group_name: { get_input: resource_group_name }
+        location: { get_input: location }
+        aks_name: { get_input: aks_name }
+      requirements:
+        - host: my-workstation
+        - login: login
+        - resource_group: resource_group
 
     k8s_deployment:
       type: camping.nodes.k8s_deployment
@@ -75,15 +74,6 @@ topology_template:
       requirements:
         - host: my-workstation
         - login: login
-#        - resource_group: resource_group
-#        - k8s_service: k8s_service
-
-    k8s_ingress:
-      type: camping.nodes.k8s_ingress
-      properties:
-        resource_group_name: { get_input: resource_group_name }
-        aks_name: { get_input: aks_name }
-      requirements:
-        - host: my-workstation
-        - login: login
+        - resource_group: resource_group
+        - k8s_cluster: k8s_cluster
 ...
