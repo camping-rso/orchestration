@@ -1,0 +1,33 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: camping-ingress
+  annotations:
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+spec:
+#  backend:
+#    serviceName: user-auth
+#    servicePort: 8080
+  rules:
+    - http:
+        paths:
+          - path: /camping-overview(/|$)(.*)
+            backend:
+              serviceName: camping-overview-ms-service
+              servicePort: 8081
+          - path: /camping-reservations(/|$)(.*)
+            backend:
+              serviceName: camping-reservations-ms-service
+              servicePort: 8082
+          - path: /camping-opinions(/|$)(.*)
+            backend:
+              serviceName: camping-opinions-ms-service
+              servicePort: 8083
+          - path: /camping-images(/|$)(.*)
+            backend:
+              serviceName: camping-images-ms-service
+              servicePort: 8084
+

@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: Delete created Azure Resource Group
+      shell: "az group delete --name {{ resource_group_name }} --yes"
+...

@@ -1,0 +1,9 @@
+---
+- hosts: all
+  tasks:
+    - name: Delete Azure Kubernetes Service
+      shell: "az aks delete --name {{ aks_name }}
+                            --resource-group {{ resource_group_name }}
+                            --no-wait
+                            --yes"
+...

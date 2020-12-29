@@ -1,0 +1,89 @@
+---
+tosca_definitions_version: tosca_simple_yaml_1_3
+
+imports:
+  - lib/azure_login/azure_login.yml
+  - lib/azure_resource_group/azure_resource_group.yml
+  - lib/k8s_cluster/k8s_cluster.yml
+  - lib/k8s_deployment/k8s_deployment.yml
+  - lib/k8s_ingress/k8s_ingress.yml
+
+topology_template:
+  inputs:
+    host_ip:
+      type: string
+    azure_credentials:
+      type: map
+    location:
+      type: string
+    resource_group_name:
+      type: string
+    aks_name:
+      type: string
+    camping_overview_ms_db_connection_string:
+      type: string
+    camping_reservations_ms_db_connection_string:
+      type: string
+    camping_opinions_ms_db_connection_string:
+      type: string
+    camping_images_ms_postgres_credentials:
+      type: map
+
+  node_templates:
+    my-workstation:
+      type: tosca.nodes.Compute
+      attributes:
+        private_address: { get_input: host_ip }
+        public_address: { get_input: host_ip }
+
+    login:
+      type: camping.nodes.azure_login
+      properties:
+        azure_credentials: { get_input: azure_credentials }
+      requirements:
+        - host: my-workstation
+
+#    resource_group:
+#      type: camping.nodes.azure_resource_group
+#      properties:
+#        resource_group_name: { get_input: resource_group_name }
+#        location: { get_input: location }
+#      requirements:
+#        - login: login
+#        - host: my-workstation
+#
+#    k8s_cluster:
+#      type: camping.nodes.k8s_cluster
+#      properties:
+#        resource_group_name: { get_input: resource_group_name }
+#        location: { get_input: location }
+#        aks_name: { get_input: aks_name }
+#      requirements:
+#        - host: my-workstation
+#        - login: login
+#        - resource_group: resource_group
+
+    k8s_deployment:
+      type: camping.nodes.k8s_deployment
+      properties:
+        resource_group_name: { get_input: resource_group_name }
+        aks_name: { get_input: aks_name }
+        camping_overview_ms_db_connection_string: { get_input: camping_overview_ms_db_connection_string }
+        camping_reservations_ms_db_connection_string: { get_input: camping_reservations_ms_db_connection_string }
+        camping_opinions_ms_db_connection_string: { get_input: camping_opinions_ms_db_connection_string }
+        camping_images_ms_postgres_credentials: { get_input: camping_images_ms_postgres_credentials }
+      requirements:
+        - host: my-workstation
+        - login: login
+#        - resource_group: resource_group
+#        - k8s_service: k8s_service
+
+    k8s_ingress:
+      type: camping.nodes.k8s_ingress
+      properties:
+        resource_group_name: { get_input: resource_group_name }
+        aks_name: { get_input: aks_name }
+      requirements:
+        - host: my-workstation
+        - login: login
+...

@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: Create Azure Resource Group for testing
+      shell: "az login --username {{ azure_credentials.username }} --password {{ azure_credentials.password }}"
+...

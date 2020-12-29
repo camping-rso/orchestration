@@ -1,0 +1,4 @@
+# azure cli
+azure-cli==2.0.0
+# opera (also installs ansible)
+opera==0.6.3

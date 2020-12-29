@@ -1,0 +1,34 @@
+---
+- hosts: all
+  tasks:
+    - name: Install kubectl
+      shell: "az aks install-cli --install-location=./kubectl"
+
+    - name: Connect to cluster using kubectl
+      shell: "az aks get-credentials --resource-group {{ resource_group_name }} --name {{ aks_name }}"
+
+    - name: Create Kubernetes secret
+      shell: "./kubectl create secret generic camping-overview-ms-secrets --from-literal=db-connection-string={{ camping_overview_ms_db_connection_string }}"
+
+    - name: Create Kubernetes secret
+      shell: "./kubectl create secret generic camping-reservations-ms-secrets --from-literal=db-connection-string={{ camping_reservations_ms_db_connection_string }}"
+
+    - name: Create Kubernetes secret
+      shell: "./kubectl create secret generic camping-opinions-ms-secrets --from-literal=db-connection-string={{ camping_opinions_ms_db_connection_string }}"
+
+    - name: Create Kubernetes secret
+      shell: "./kubectl create secret generic camping-images-ms-secrets --from-literal=postgres-username={{ camping_images_ms_postgres_credentials.username }}
+                                                                        --from-literal=postgres-password={{ camping_images_ms_postgres_credentials.password }}"
+
+    - name: Create Kubernetes deployment and service
+      shell: "./kubectl apply -f microservices/camping_overview_ms/deployment.yml"
+
+    - name: Create Kubernetes deployment and service
+      shell: "./kubectl apply -f microservices/camping_reservations_ms/deployment.yml"
+
+    - name: Create Kubernetes deployment and service
+      shell: "./kubectl apply -f microservices/camping_opinions_ms/deployment.yml"
+
+    - name: Create Kubernetes deployment and service
+      shell: "./kubectl apply -f microservices/camping_images_ms/deployment.yml"
+...

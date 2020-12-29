@@ -1,0 +1,13 @@
+---
+- hosts: all
+  tasks:
+    - name: Create Azure Kubernetes Service
+      shell: "az aks create --name {{ aks_name }}
+                            --location {{ location }}
+                            --resource-group {{ resource_group_name }}
+                            --network-plugin kubenet
+                            --zones 1
+                            --node-count 1
+                            --node-vm-size Standard_A2_v2
+                            --no-wait"
+...

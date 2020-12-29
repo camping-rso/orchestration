@@ -1,0 +1,6 @@
+---
+- hosts: all
+  tasks:
+    - name: Create Azure Resource Group for testing
+      shell: "az group create --location {{ location }} --name {{ resource_group_name }}"
+...
