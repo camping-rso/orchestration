@@ -1,8 +1,12 @@
------
+---
 - hosts: all
   tasks:
+    - name: Get the resource group name of the AKS cluster
+      shell: "az aks show --resource-group {{ resource_group_name }} --name {{ aks_name }} --query nodeResourceGroup -o tsv"
+      register: resource_group
+
     - name: Create a new public IP
-      shell: "az network public-ip create --resource-group {{ resource_group_name }} --name CampingIP --sku Standard --allocation-method static --query publicIp.ipAddress -o tsv"
+      shell: "az network public-ip create --resource-group {{ resource_group.stdout_lines[0] }} --name CampingIP --sku Standard --zone 1 --allocation-method static --query publicIp.ipAddress -o tsv"
       register: public_ip
 
     - name: Install kubectl
@@ -12,20 +16,20 @@
       shell: "az aks get-credentials --resource-group {{ resource_group_name }} --name {{ aks_name }}"
 
     - name: Create Kubernetes secret
-      shell: "./kubectl create secret generic camping-overview-ms-secrets --from-literal=db-connection-string={{ camping_overview_ms_db_connection_string }}"
+      shell: "./kubectl create secret generic camping-overview-ms-secrets --from-literal=db-connection-string='{{ camping_overview_ms_db_connection_string }}'"
 
     - name: Create Kubernetes secret
-      shell: "./kubectl create secret generic camping-reservations-ms-secrets --from-literal=db-connection-string={{ camping_reservations_ms_db_connection_string }}"
+      shell: "./kubectl create secret generic camping-reservations-ms-secrets --from-literal=db-connection-string='{{ camping_reservations_ms_db_connection_string }}'"
 
     - name: Create Kubernetes secret
-      shell: "./kubectl create secret generic camping-opinions-ms-secrets --from-literal=db-connection-string={{ camping_opinions_ms_db_connection_string }}"
+      shell: "./kubectl create secret generic camping-opinions-ms-secrets --from-literal=db-connection-string='{{ camping_opinions_ms_db_connection_string }}'"
 
     - name: Create Kubernetes secret
-      shell: "./kubectl create secret generic camping-images-ms-secrets --from-literal=postgres-username={{ camping_images_ms_postgres_credentials.username }}
-                                                                        --from-literal=postgres-password={{ camping_images_ms_postgres_credentials.password }}"
+      shell: "./kubectl create secret generic camping-images-ms-secrets --from-literal=postgres-username='{{ camping_images_ms_postgres_credentials.username }}'
+                                                                        --from-literal=postgres-password='{{ camping_images_ms_postgres_credentials.password }}'"
 
     - name: Create Kubernetes secret
-      shell: "./kubectl create secret generic camping-ms-secrets --from-literal=base-url=http://{{ public_ip }}"
+      shell: "./kubectl create secret generic camping-ms-secrets --from-literal=base-url='http://{{ public_ip.stdout_lines[0] }}'"
 
     - name: Create Kubernetes deployment and service
       shell: "./kubectl apply -f microservices/camping_overview_ms/deployment.yml"
@@ -57,9 +61,8 @@
                --set controller.replicaCount=1
                --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux
                --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
-               --set controller.service.loadBalancerIP="{{ public_ip }}"
-               --set controller.admissionWebhooks.patch.nodeSelector."beta\.kubernetes\.io/os"=linux'
+               --set controller.service.loadBalancerIP="{{ public_ip.stdout_lines[0] }}"'
 
     - name: Create Kubernetes deployment and service
       shell: "./kubectl apply -f ingress.yml"
-.....
+...

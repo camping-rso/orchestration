@@ -6,8 +6,8 @@
                             --location {{ location }}
                             --resource-group {{ resource_group_name }}
                             --network-plugin kubenet
+                            --generate-ssh-keys
                             --zones 1
                             --node-count 1
-                            --node-vm-size Standard_A2_v2
-                            --no-wait"
+                            --node-vm-size Standard_A2_v2"
 ...
