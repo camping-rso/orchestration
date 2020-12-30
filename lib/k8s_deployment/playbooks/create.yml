@@ -61,8 +61,11 @@
                --set controller.replicaCount=1
                --set controller.nodeSelector."beta\.kubernetes\.io/os"=linux
                --set defaultBackend.nodeSelector."beta\.kubernetes\.io/os"=linux
-               --set controller.service.loadBalancerIP="{{ public_ip.stdout_lines[0] }}"'
+               --set controller.service.loadBalancerIP="{{ public_ip.stdout_lines[0] }}"
+               --set controller.admissionWebhooks.enabled=false'
 
-    - name: Create Kubernetes deployment and service
+    - name: Apply Kubernetes ingress
       shell: "./kubectl apply -f ingress.yml"
+      retries: 3
+      delay: 10
 ...
