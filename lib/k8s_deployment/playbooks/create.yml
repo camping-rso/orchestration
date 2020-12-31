@@ -43,17 +43,19 @@
     - name: Create Kubernetes deployment and service
       shell: "./kubectl apply -f microservices/camping_images_ms/deployment.yml"
 
+    - name: Create Kubernetes deployment and service
+      shell: "./kubectl apply -f microservices/camping_web_interface/deployment.yml"
+
     - name: Create a namespace for ingress resources
       shell: "./kubectl create namespace ingress-camping"
 
     - name: Install helm
       shell: "curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3 && chmod 700 get_helm.sh && ./get_helm.sh"
 
-    #    - name: Install helm
-    #      shell: "wget https://get.helm.sh/helm-v3.4.2-linux-amd64.tar.gz && tar -zxvf helm-v3.4.2-linux-amd64.tar.gz && mv linux-amd64/helm ./helm"
-
     - name: Add the ingress-nginx repository
       shell: "helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx"
+      retries: 3
+      delay: 10
 
     - name: Use Helm to deploy an NGINX ingress controller
       shell: 'helm install nginx-ingress ingress-nginx/ingress-nginx

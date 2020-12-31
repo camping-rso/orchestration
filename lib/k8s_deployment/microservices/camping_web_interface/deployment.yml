@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: camping-web-interface-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: camping-web-interface
+  template:
+    metadata:
+      labels:
+        app: camping-web-interface
+    spec:
+      containers:
+        - image: campingrso/camping-web-interface:latest
+          name: camping-web-interface
+          env:
+            - name: BASE_PATH
+              value: camping-web-interface
+            - name: API_URL
+              valueFrom:
+                secretKeyRef:
+                  name: camping-ms-secrets
+                  key: base-url
+          ports:
+            - containerPort: 80
+              name: server
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: camping-web-interface-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8085
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: camping-web-interface

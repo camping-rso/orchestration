@@ -30,4 +30,8 @@ spec:
             backend:
               serviceName: camping-images-ms-service
               servicePort: 8084
+          - path: /camping-web-interface(/|$)(.*)
+            backend:
+              serviceName: camping-web-interface-service
+              servicePort: 8085
 
