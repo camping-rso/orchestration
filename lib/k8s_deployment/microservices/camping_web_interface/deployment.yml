@@ -16,8 +16,6 @@ spec:
         - image: campingrso/camping-web-interface:latest
           name: camping-web-interface
           env:
-            - name: BASE_PATH
-              value: camping-web-interface
             - name: API_URL
               valueFrom:
                 secretKeyRef:
