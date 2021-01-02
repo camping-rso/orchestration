@@ -25,6 +25,9 @@ node_types:
         entry_schema:
           description: Postgres username and password
           type: string
+      datadog_api_key:
+        description: Datadog monitoring API key
+        type: string
     interfaces:
       Standard:
         type: tosca.interfaces.node.lifecycle.Standard
@@ -35,6 +38,7 @@ node_types:
           camping_reservations_ms_db_connection_string: { default: { get_property: [SELF, camping_reservations_ms_db_connection_string] }, type: string }
           camping_opinions_ms_db_connection_string: { default: { get_property: [SELF, camping_opinions_ms_db_connection_string] }, type: string }
           camping_images_ms_postgres_credentials: { default: { get_property: [SELF, camping_images_ms_postgres_credentials] }, type: map }
+          datadog_api_key: { default: { get_property: [SELF, datadog_api_key] }, type: string }
         operations:
           create:
             implementation:
@@ -42,5 +46,6 @@ node_types:
               dependencies:
                 - microservices
                 - files/ingress.yml
+                - files/datadog-values.yaml
           delete: playbooks/delete.yml
 ...

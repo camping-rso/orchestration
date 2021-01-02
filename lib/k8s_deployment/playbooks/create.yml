@@ -70,4 +70,16 @@
       shell: "./kubectl apply -f ingress.yml"
       retries: 3
       delay: 10
+
+    - name: Add the datadog repository
+      shell: "helm repo add datadog https://helm.datadoghq.com"
+
+    - name: Add the stable repository
+      shell: "helm repo add stable https://charts.helm.sh/stable"
+
+    - name: Update helm repos
+      shell: "helm repo update"
+
+    - name: Add the stable repository
+      shell: "helm install datadog-agent -f datadog-values.yaml --set datadog.site='datadoghq.eu' --set datadog.apiKey={{ datadog_api_key }} datadog/datadog"
 ...

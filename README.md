@@ -12,7 +12,16 @@
 ## Purpose
 The repository implements the orchestration and automation of camping microservices on managed Microsoft Azure Kubernetes
 instance. The orchestration is done using [xOpera TOSCA orchestrator](https://github.com/xlab-si/xopera-opera) and 
-[Ansible](https://www.ansible.com/) is used for the automation.
+[Ansible](https://www.ansible.com/) is used for the automation. 
+
+The solution does the following:
+
+- login to the Azure account
+- create a new Azure Resource Group
+- create a new Azure Kubernetes Service (AKS) cluster
+- deploy camping microservices on AKS
+- create an ingress controller on AKS
+- establish monitoring with Datadog
 
 ## Functionality
 The main functionality of image-resize is to create thumbnails from the source image. Source image must be uploaded into
@@ -60,6 +69,7 @@ Currently the following values can be modified:
 | `camping_reservations_ms_db_connection_string` | Connection string to PostgreSQL | "Host=localhost;Port=5432;Database=camping;Username=postgres;Password=potgres;Pooling=true;" |
 | `camping_opinions_ms_db_connection_string` | Connection string to PostgreSQL | "Host=localhost;Port=5432;Database=camping;Username=postgres;Password=potgres;Pooling=true;" |
 | `camping_images_ms_postgres_credentials` | PostgreSQL credentials | { username: postgres, password: postgres } |
+| `datadog_api_key` | Datadog API key | dkwferf4g89r4g89rg4r4t84 |
 
 ## Deploy
 To deploy the prepared blueprint run `opera deploy -i inputs.yml service_template.yml`

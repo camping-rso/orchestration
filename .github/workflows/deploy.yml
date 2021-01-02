@@ -20,25 +20,15 @@ jobs:
           pip install yamlpath==2.3.4
           echo "0"
           yaml-set --change=host_ip --value="localhost" inputs.yml
-          echo "1"
           yaml-set --change=location --value="${{ secrets.AZURE_LOCATION }}" inputs.yml
-          echo "2"
           yaml-set --change=azure_credentials.username --value="${{ secrets.AZURE_USERNAME }}" inputs.yml
-          echo "3"
           yaml-set --change=azure_credentials.password --value="${{ secrets.AZURE_PASSWORD }}" inputs.yml
-          echo "4"
           yaml-set --change=resource_group_name --value="${{ secrets.AZURE_RESOURCE_GROUP }}" inputs.yml
-          echo "5"
           yaml-set --change=aks_name --value="${{ secrets.AZURE_AKS }}" inputs.yml
-          echo "6"
           yaml-set --change=camping_overview_ms_db_connection_string --value="${{ secrets.CAMPING_OVERVIEW_MS_DB_CONNECTION_STRING }}" inputs.yml
-          echo "7"
           yaml-set --change=camping_reservations_ms_db_connection_string --value="${{ secrets.CAMPING_RESERVATIONS_MS_DB_CONNECTION_STRING }}" inputs.yml
-          echo "8"
           yaml-set --change=camping_opinions_ms_db_connection_string --value="${{ secrets.CAMPING_OPINIONS_MS_DB_CONNECTION_STRING }}" inputs.yml
-          echo "9"
           yaml-set --change=camping_images_ms_postgres_credentials.username --value="${{ secrets.CAMPING_IMAGES_MS_POSTGRES_USERNAME }}" inputs.yml
-          echo "10"
           yaml-set --change=camping_images_ms_postgres_credentials.password --value="${{ secrets.CAMPING_IMAGES_MS_POSTGRES_PASSWORD }}" inputs.yml
-          echo "11"
+          yaml-set --change=datadog_api_key --value="${{ secrets.DATADOG_API_KEY }}" inputs.yml
           opera deploy -i inputs.yml service_template.yml
