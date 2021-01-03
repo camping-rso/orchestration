@@ -69,6 +69,7 @@ Currently the following values can be modified:
 | `camping_reservations_ms_db_connection_string` | Connection string to PostgreSQL | "Host=localhost;Port=5432;Database=camping;Username=postgres;Password=potgres;Pooling=true;" |
 | `camping_opinions_ms_db_connection_string` | Connection string to PostgreSQL | "Host=localhost;Port=5432;Database=camping;Username=postgres;Password=potgres;Pooling=true;" |
 | `camping_images_ms_postgres_credentials` | PostgreSQL credentials | { username: postgres, password: postgres } |
+| `camping_catalog_ms_influx_credentials` | PostgreSQL credentials | { host: "influx.com", port: 12345, user: adim, password: secret, database: test } |
 | `datadog_api_key` | Datadog API key | dkwferf4g89r4g89rg4r4t84 |
 
 ## Deploy

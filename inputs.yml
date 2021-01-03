@@ -10,6 +10,6 @@ camping_overview_ms_db_connection_string: <camping_overview_ms_db_connection_str
 camping_reservations_ms_db_connection_string: <camping_reservations_ms_db_connection_string>
 camping_opinions_ms_db_connection_string: <camping_opinions_ms_db_connection_string>
 camping_images_ms_postgres_credentials: { username: <username>, password: <password> }
-camping_catalog_ms_influx_credentials: { host: "influx.com", port: 12345, user: adim, password: secret, database: test }
+camping_catalog_ms_influx_credentials: { host: <host>, port: <port>, user: <user>, password: <password>, database: <database> }
 datadog_api_key: <datadog_api_key>
 ...
