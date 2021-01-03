@@ -25,6 +25,11 @@ node_types:
         entry_schema:
           description: Postgres username and password
           type: string
+      camping_catalog_ms_influx_credentials:
+        type: map
+        entry_schema:
+          description: InfluxDB connection params
+          type: string
       datadog_api_key:
         description: Datadog monitoring API key
         type: string
@@ -38,6 +43,7 @@ node_types:
           camping_reservations_ms_db_connection_string: { default: { get_property: [SELF, camping_reservations_ms_db_connection_string] }, type: string }
           camping_opinions_ms_db_connection_string: { default: { get_property: [SELF, camping_opinions_ms_db_connection_string] }, type: string }
           camping_images_ms_postgres_credentials: { default: { get_property: [SELF, camping_images_ms_postgres_credentials] }, type: map }
+          camping_catalog_ms_influx_credentials: { default: { get_property: [SELF, camping_catalog_ms_influx_credentials] }, type: map }
           datadog_api_key: { default: { get_property: [SELF, datadog_api_key] }, type: string }
         operations:
           create:

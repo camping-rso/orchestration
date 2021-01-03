@@ -30,5 +30,10 @@ jobs:
           yaml-set --change=camping_opinions_ms_db_connection_string --value="${{ secrets.CAMPING_OPINIONS_MS_DB_CONNECTION_STRING }}" inputs.yml
           yaml-set --change=camping_images_ms_postgres_credentials.username --value="${{ secrets.CAMPING_IMAGES_MS_POSTGRES_USERNAME }}" inputs.yml
           yaml-set --change=camping_images_ms_postgres_credentials.password --value="${{ secrets.CAMPING_IMAGES_MS_POSTGRES_PASSWORD }}" inputs.yml
+          yaml-set --change=camping_catalog_ms_influx_credentials.host --value="${{ secrets.CAMPING_IMAGES_MS_INFLUX_HOST }}" inputs.yml
+          yaml-set --change=camping_catalog_ms_influx_credentials.port --value="${{ secrets.CAMPING_IMAGES_MS_INFLUX_PORT }}" inputs.yml
+          yaml-set --change=camping_catalog_ms_influx_credentials.user --value="${{ secrets.CAMPING_IMAGES_MS_INFLUX_USER }}" inputs.yml
+          yaml-set --change=camping_catalog_ms_influx_credentials.password --value="${{ secrets.CAMPING_IMAGES_MS_INFLUX_PASSWORD }}" inputs.yml
+          yaml-set --change=camping_catalog_ms_influx_credentials.database --value="${{ secrets.CAMPING_IMAGES_MS_INFLUX_DATABASE }}" inputs.yml
           yaml-set --change=datadog_api_key --value="${{ secrets.DATADOG_API_KEY }}" inputs.yml
           opera deploy -i inputs.yml service_template.yml

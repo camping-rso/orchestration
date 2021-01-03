@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: camping-catalog-ms-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: camping-catalog-ms
+  template:
+    metadata:
+      labels:
+        app: camping-catalog-ms
+    spec:
+      containers:
+        - image: campingrso/camping-catalog-ms:latest
+          name: camping-catalog-ms
+          env:
+            - name: INFLUX_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: camping-catalog-ms-secrets
+                  key: influx-host
+            - name: INFLUX_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: camping-catalog-ms-secrets
+                  key: influx-port
+            - name: INFLUX_USER
+              valueFrom:
+                secretKeyRef:
+                  name: camping-catalog-ms-secrets
+                  key: influx-user
+            - name: INFLUX_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: camping-catalog-ms-secrets
+                  key: influx-password
+            - name: INFLUX_DATABASE
+              valueFrom:
+                secretKeyRef:
+                  name: camping-catalog-ms-secrets
+                  key: influx-database
+          ports:
+            - containerPort: 80
+              name: server
+              protocol: TCP
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: camping-catalog-ms-service
+spec:
+  type: ClusterIP
+  ports:
+    - port: 8086
+      protocol: TCP
+      targetPort: server
+  selector:
+    app: camping-catalog-ms

@@ -29,6 +29,13 @@
                                                                         --from-literal=postgres-password='{{ camping_images_ms_postgres_credentials.password }}'"
 
     - name: Create Kubernetes secret
+      shell: "./kubectl create secret generic camping-catalog-ms-secrets --from-literal=influx-host='{{ camping_catalog_ms_influx_credentials.host }}'
+                                                                         --from-literal=influx-port='{{ camping_catalog_ms_influx_credentials.port }}'
+                                                                         --from-literal=influx-user='{{ camping_catalog_ms_influx_credentials.user }}'
+                                                                         --from-literal=influx-password='{{ camping_catalog_ms_influx_credentials.password }}'
+                                                                         --from-literal=influx-database='{{ camping_catalog_ms_influx_credentials.database }}'"
+
+    - name: Create Kubernetes secret
       shell: "./kubectl create secret generic camping-ms-secrets --from-literal=base-url='http://{{ public_ip.stdout_lines[0] }}'"
 
     - name: Create Kubernetes deployment and service

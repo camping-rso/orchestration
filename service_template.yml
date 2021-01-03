@@ -27,6 +27,8 @@ topology_template:
       type: string
     camping_images_ms_postgres_credentials:
       type: map
+    camping_catalog_ms_influx_credentials:
+      type: map
     datadog_api_key:
       type: string
 
@@ -73,6 +75,7 @@ topology_template:
         camping_reservations_ms_db_connection_string: { get_input: camping_reservations_ms_db_connection_string }
         camping_opinions_ms_db_connection_string: { get_input: camping_opinions_ms_db_connection_string }
         camping_images_ms_postgres_credentials: { get_input: camping_images_ms_postgres_credentials }
+        camping_catalog_ms_influx_credentials: { get_input: camping_catalog_ms_influx_credentials }
         datadog_api_key: { get_input: datadog_api_key }
       requirements:
         - host: my-workstation

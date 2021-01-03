@@ -8,9 +8,6 @@ metadata:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/rewrite-target: /$2
 spec:
-#  backend:
-#    serviceName: user-auth
-#    servicePort: 8080
   rules:
     - http:
         paths:
@@ -34,4 +31,8 @@ spec:
             backend:
               serviceName: camping-web-interface-service
               servicePort: 8085
+          - path: /camping-catalog(/|$)(.*)
+            backend:
+              serviceName: camping-catalog-ms-service
+              servicePort: 8086
 
