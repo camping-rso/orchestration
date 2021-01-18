@@ -1,4 +1,4 @@
-# Camping microservices orchestration and automation with xOpera with Ansible
+# Camping microservices orchestration and automation with xOpera and Ansible
 
 ## Table of Contents
   - [Purpose](#purpose)
